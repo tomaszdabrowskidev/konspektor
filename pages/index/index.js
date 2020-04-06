@@ -1,0 +1,1 @@
+//obara to debil xD
