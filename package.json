@@ -1,0 +1,17 @@
+{
+  "name": "kreator-konspekt",
+  "version": "1.0.0",
+  "description": "Asystent pisania konspektu rozprawki na j. polski z dedykacja dla sz. p. Anieli Licznerskiej.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "konspekt"
+  ],
+  "author": "Kajetan Grzybowski, Michal Obara, Tomasz Dabrowski",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^8.2.0"
+  }
+}
