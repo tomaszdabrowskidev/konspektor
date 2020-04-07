@@ -1,1 +1,3 @@
-//obara to debil xD
+window.addEventListener("DOMContentLoaded", () => {
+    console.log("Loaded!");
+});

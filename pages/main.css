@@ -13,12 +13,33 @@
 *, *::after, *::before {
     box-sizing: border-box;
     font-family: 'Roboto';
+    user-select: none;
 }
 
 body {
     margin: 0;
     padding: 0;
     background-color: #D7D7D7;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.clearfix::after {
+    display: table;
+    clear: both;
+    content: '';
+}
+
+.right {
+    float: right !important;
+}
+.left {
+    float: left !important;
+}
+.center {
+    float: center !important;
 }
 
 .header {
@@ -31,12 +52,17 @@ body {
     font-weight: 600;
     position: relative;
     float: left;
+    overflow: hidden;
 }
 
 .header__title {
     font-size: 28px;
     margin-left: 15px;
+    overflow: hidden;
+    min-width: 400px;
+    display: block;
 }
+
 .header__path {
     position: absolute;
     top: 30px;
@@ -44,8 +70,15 @@ body {
     transform: translateY(-50%);
     font-size: 16px;
     color: #464748;
+    overflow: hidden;
+    display: block;
 }
 
+@media screen and (max-width: 650px) {
+    .header__path {
+        display: none;
+    }
+}
 .content {
     width: 100%;
     height: calc(100% - 60px - 80px); /* header = 60px; stopka = 80px */
@@ -106,10 +139,17 @@ body {
     transition: 0.7s;
     float: left;
 }
+
 .button:hover {
     background-color: #9C9C9C;
 }
 
 .button__footer {
-    margin: 10px 20px;
+    margin: 10px 10px;
+    display: block;
+    overflow: hidden;
+}
+
+.footer--draft {
+    height: 120px !important;
 }
