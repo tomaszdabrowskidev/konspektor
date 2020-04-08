@@ -1,0 +1,10 @@
+{
+    "crits": [
+        {"name": "temat", "minWordsWarn": 3, "minWordsWrong": 1, "perfectProportion": null},
+        {"name": "teza", "minWordsWarn": 30, "minWordsWrong": 10, "perfectProportionMin": 5, "perfectProportionMax": 25},
+        {"name": "arg1", "minWordsWarn": 70, "minWordsWrong": 50, "perfectProportionMin": 13, "perfectProportionMax": 33},
+        {"name": "arg2", "minWordsWarn": 70, "minWordsWrong": 50, "perfectProportionMin": 13, "perfectProportionMax": 33},
+        {"name": "arg3", "minWordsWarn": 70, "minWordsWrong": 50, "perfectProportionMin": 13, "perfectProportionMax": 33},
+        {"name": "zakonczenie", "minWordsWarn": 30, "minWordsWrong": 10, "perfectProportionMin": 6, "perfectProportionMax": 26}
+    ]
+}

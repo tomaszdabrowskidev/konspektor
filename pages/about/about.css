@@ -1,9 +1,11 @@
 .arabi__turtle {
-    width: 50px;
-    height: 50px;
-    background-color: aliceblue;
+    width: 100%;
+    height: 80px;
+    background-color: #D7D7D7;
+    border: none;
+    font-size: 32px;
 }
 
 .arabi__turtle:hover {
-    background-color: gray;
+    background-color: rgb(107, 104, 104);
 }

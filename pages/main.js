@@ -1,5 +1,3 @@
-
-
 window.addEventListener("DOMContentLoaded", () => {
 
     // enable TAB on Textareas

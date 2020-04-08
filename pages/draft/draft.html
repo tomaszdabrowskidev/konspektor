@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="draft.css" type="text/css">
         <link href="../../sources/szcionki/Roboto-Regular.ttf" rel="stylesheet">
         <script src="../main.js" type="text/javascript"></script>
+        <script src="../../sources/js/fileManager.js" type="text/javascript"></script>
         <script src="draft.js" type="text/javascript"></script>
         <title>Konspektor</title>
     </head>
@@ -28,35 +29,59 @@
                         <p class="draft__title">Polecenie / temat</p>
                         <span class="draft__description">Wpisz polecenie / temat rozprawki. Można pominąć ten etap.</span>
                         <div class="clearfix"></div>
-                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase-0-textarea" placeholder="Pole do wpisania polecenia / tematu pracy"></textarea>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__theme-0-textarea" placeholder="Pole do wpisania polecenia / tematu pracy"></textarea>
                     </div>
                     <div class="draft__phase" style="top: calc(100%);" id="draft__phase-1">
                         <p class="draft__title">Teza</p>
                         <span class="draft__description">Postaw tezę do rozprawki. Pamiętaj, że powinna być jasno sprecyzowana.</span>
                         <div class="clearfix"></div>
-                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase-0-textarea" placeholder="Pole do wpisania tezy"></textarea>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__thesis-1-textarea" placeholder="Pole do wpisania tezy"></textarea>
                     </div>
                     <br>
                     <div class="draft__phase" style="top: calc(200%);" id="draft__phase-2">
                         <p class="draft__title">Argument I</p>
                         <span class="draft__description">Zamieść argument pierwszy. Pamiętaj, że argument składa się z wniosku i przykładu.</span>
                         <div class="clearfix"></div>
-                        <p class="draft__subtitle">Wniosek do argumentu</p>
-                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase-2-textarea" placeholder="tu napisz swoją rozprawke szczepan"></textarea>
-                        <p class="draft__subtitle">Przykład do argumentu</p>
-                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase-2-textarea" placeholder="tu napisz swoją rozprawke szczepan"></textarea>
+                        <p class="draft__subtitle">Wniosek do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__argument-2-textarea" placeholder=" "></textarea>
+                        <br>
+                        <p class="draft__subtitle">Przykład do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__example-2-textarea" placeholder=" "></textarea>
                     </div>
                     <div class="draft__phase" style="top: calc(300%);" id="draft__phase-3">
-                        <p class="draft__title">Postaw tezę Szczepanie</p>
+                        <p class="draft__title">Argument II</p>
+                        <span class="draft__description">Zamieść argument drugi. Pamiętaj, że argument składa się z wniosku i przykładu.</span>
+                        <div class="clearfix"></div>
+                        <p class="draft__subtitle">Wniosek do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__argument-3-textarea" placeholder=" "></textarea>
+                        <br>
+                        <p class="draft__subtitle">Przykład do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__example-3-textarea" placeholder=" "></textarea>
                     </div>
                     <div class="draft__phase" style="top: calc(400%);" id="draft__phase-4">
-                        <p class="draft__title">Postaw tezę Szczepanie</p>
+                        <p class="draft__title">Argument III</p>
+                        <span class="draft__description">Zamieść argument trzeci. Pamiętaj, że argument składa się z wniosku i przykładu.</span>
+                        <div class="clearfix"></div>
+                        <p class="draft__subtitle">Wniosek do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__argument-4-textarea" placeholder=" "></textarea>
+                        <br>
+                        <p class="draft__subtitle">Przykład do argumentu:</p>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__example-4-textarea" placeholder=""></textarea>
                     </div>
                     <div class="draft__phase" style="top: calc(500%);" id="draft__phase-5">
-                        <p class="draft__title">Last teza Szczepan</p>
+                        <p class="draft__title">Zakończenie</p>
+                        <span class="draft__description">Umieść zakończenie swojej pracy.</span>
+                        <textarea class="draft-textarea draft-textarea--big" id="draft__phase__ending-5-textarea" placeholder=" "></textarea>
                     </div>
                     <div class="draft__phase" style="top: calc(600%);" id="draft__phase-6">
                         <p class="draft__title">Podsumowanie</p>
+                        <div class="draft__summary__document">
+                            <div class="draft__summary__document__element">Lorem ipsum balfkdsjngsjnd</div>
+                            <div class="draft__summary__document__element">Lorem ipsum xdd</div>
+                        </div>
+                        <div class="draft__summary__info">
+                            <span id="draft__summary"></span>                      
+                        </div>
                     </div>
                 </div>
             </div>

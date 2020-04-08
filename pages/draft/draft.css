@@ -16,13 +16,16 @@
 .sidebar__element--selected {
     font-weight: bold;
     font-size: 19px;
+    color: black !important;
 }
+/* status */
 
-.sidebar__element--done {
+.sidebar__element--correct {
     color: green;
 }
 
-.sidebar__element--wrong {
+.sidebar__element--warn {
+    font-weight: 800;
     color: #C54A06;
 }
 
