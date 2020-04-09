@@ -8,3 +8,52 @@
     height: calc(100% - 18px - 16px);
     margin-bottom: 13px;
 }
+
+.squareButton__settings {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: bold;
+    color: #303030;
+    transition: 0.4s;
+}
+
+.squareButton__settings:hover {
+    color: white;
+}
+
+.squareButton__settingsPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #C4C4C4;
+    z-index: 1000;
+    transition: 0.4s;
+}    
+.squareButton__settingsPanel--hidden {
+    top: -100%;
+} 
+
+.squareButton__settingsPanel__element {
+    width: 100%;
+    height: 25%;
+    cursor: pointer;
+    float: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: 0.5s;
+    font-size: 16px;
+    transition: 1s;
+}
+
+
+.squareButton__settingsPanel__element:hover {
+    background-color: #9C9C9C;
+}
+

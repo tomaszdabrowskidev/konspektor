@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 class FileManager {
     static loadList(path, callback) {
@@ -7,7 +7,7 @@ class FileManager {
             if (err) return console.log('Unable to scan directory: ' + err);
             
             files.forEach(function (file) {
-                console.log(file);
+                //console.log(file);
             });
             callback(files)
         });
@@ -26,6 +26,18 @@ class FileManager {
             if(err) return console.log(err);
             console.log("The file was saved!");
         }); 
+    }
+
+    static createDirectory(path) {
+        if (!fs.existsSync(path)){
+            fs.mkdirSync(path);
+        }
+    }
+
+    static removeFile(filepath) {
+        fs.remove(path.join(__dirname, filepath), (message) => {
+            console.log(message)
+        });
     }
 }
 

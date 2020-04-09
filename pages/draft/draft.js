@@ -9,15 +9,12 @@ let loadConfigData = () => {
 window.addEventListener("DOMContentLoaded", () => {
     console.log("Draw Loaded!");
     loadConfigData();
-
     for(let i = 0; i < 7; i++) {
         document.getElementById('sidebar__element-' + i).addEventListener("click", () => {
             console.log('klikam -> ' + i);
             Drafts.changePhase = i;
-            if (i == 1) {
-                
-            }
             if (i == 6) {
+                //tu wywolac funkcje    -- - makeSummary  (=== func countPercentage (istniejacva funckaj))    (co zle co do poprawy ile czego procent stanowi)
             }
         })
     }
@@ -28,7 +25,87 @@ window.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById('draft__button-next').addEventListener('click', () => Drafts.changePhase = "+")
     document.getElementById('draft__button-previous').addEventListener('click', () => Drafts.changePhase = "-")
+    document.getElementById('draft__button-save').addEventListener('click', () => {
+        wannaSaveAlert();
+    });
+    document.getElementById('draft__button-cancel').addEventListener('click', () => {
+        if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
+            window.location.href = "../index/index.html";
+        };
+    });
 });
+
+
+function generateJSON() {
+    let textareas = returnTextareas();
+    //theme
+    let theme = document.getElementById(textareas[0][0]).value;
+    //thesis
+    let thesis = document.getElementById(textareas[1][0]).value;
+    //arg1
+    let deduce1 = document.getElementById(textareas[2][0]).value;
+    let example1 = document.getElementById(textareas[2][1]).value;
+    //arg2
+    let deduce2 = document.getElementById(textareas[3][0]).value;
+    let example2 = document.getElementById(textareas[3][1]).value;
+    //arg3
+    let deduce3 = document.getElementById(textareas[4][0]).value;
+    let example3 = document.getElementById(textareas[4][1]).value;
+    //end
+    let ending = document.getElementById(textareas[5][0]).value;
+
+    let output = {
+        name: "",
+        description: "",
+        created: "",
+        content: [
+            {type: "theme", value: theme},
+            {type: "thesis", value: thesis},
+            {type: "arg1", value: [deduce1, example1]},
+            {type: "arg2", value: [deduce2, example2]},
+            {type: "arg3", value: [deduce3, example3]},
+            {type: "end", value: ending}
+        ]
+    };
+
+    return output;    
+}
+
+let wannaSaveAlert = () => {
+    prompt({
+        title: 'Zapisz rozprawke',
+        label: 'Tytuł rozprawki:',
+        value: '',
+        inputAttrs: {
+            type: 'text'
+        },
+        type: 'input'
+    })
+    .then((fileName) => {
+        if (fileName === null) {
+        } else {
+            if (fileName.length > 25 || fileName.length < 3) return alert("Nazwa pliku powinna być dłuższa niż 3 znaki i krótsza niż 25 znaków.")
+            fs.mkdir(path.join(__dirname, `../../data/essays/${fileName}`), (err) => { 
+                if (err) { 
+                    return console.error(err); 
+                } else {
+                    saveFile(`../../data/essays/${fileName}/essay.txt`)
+                    alert("Plik zapisany!")
+                }
+            }); 
+        }
+    })
+    .catch(console.error);
+}
+
+const saveFile = (path) => {
+    //   path = ../../data/essays/${fileName}/${fileName}.txt
+    content = generateJSON();
+    console.log('Content of file: ');
+    console.log(content);
+    FileManager.writeFile(path, content)
+}
+
 
 
 const countWords = (textAreaId) => {

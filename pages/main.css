@@ -132,6 +132,7 @@ body {
     background-color: #C4C4C4;
     transition: 0.7s;
     cursor: pointer;
+    overflow: hidden;
     float: left;
 }
 

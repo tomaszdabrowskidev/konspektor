@@ -1,3 +1,5 @@
+const prompt = require('electron-prompt');
+
 window.addEventListener("DOMContentLoaded", () => {
 
     // enable TAB on Textareas
