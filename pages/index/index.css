@@ -4,6 +4,11 @@
     margin-bottom: 13px;
 }
 
+.squareButton__import-icon {
+    height: calc(100% - 12px);
+    margin-bottom: 13px;
+}
+
 .squareButton__document-icon {
     height: calc(100% - 18px - 16px);
     margin-bottom: 13px;

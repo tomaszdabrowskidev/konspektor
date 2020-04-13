@@ -114,6 +114,13 @@ body {
     display: none;
 }
 
+.content--withSidebar {
+    width: calc(100% - 250px);
+    height: calc(100% - 60px - 120px);
+    transition: 2s;
+    position: relative;
+}
+
 .footer {
     width: 100vw;
     height: 80px;
@@ -179,4 +186,125 @@ body {
 
 .footer--draft {
     height: 120px !important;
+}
+
+/* sidebars */
+.sidebar {
+    width: 250px;
+    height: calc(100% - 60px - 120px);
+    padding: 25px;
+    float: left;
+    text-align: left;
+}
+
+.sidebar__element {
+    font-size: 18px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.sidebar__element--selected {
+    font-weight: bold;
+    font-size: 19px;
+    color: black !important;
+}
+/* status */
+
+.sidebar__element--correct {
+    color: green;
+}
+
+.sidebar__element--warn {
+    font-weight: 800;
+    color: #C54A06;
+}
+
+.sidebar__element--wrong {
+    font-weight: 800;
+    color: #C31323
+}
+
+/* animated sections */
+
+.sections-container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    float: left;    
+}
+
+.sections {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 2s;
+}
+
+.section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding-right: 5px;
+}
+
+.section__title {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.section__subtitle {
+    font-size: 18px;
+    font-weight: normal;
+    margin: 10px 0;
+}
+.section__description {
+    margin: 10px 0;
+    display: block;
+}
+.section-textarea {
+    user-select: all !important;
+    background-color: #F0F0F0;
+    border: 0;
+    min-width: 250px;
+    width: 80%;
+    min-height: 250px;
+    display: block;
+    padding: 5px;
+    font-size: 18px;
+    resize: vertical;
+    max-height: 90%;
+}
+.section-textarea--big {
+    width: calc(100% - 10px);
+    height: 561px;
+}
+
+/* END OF animated sections */
+
+.documentPresentation {
+    background-color: white;
+    color: black;
+    padding: 20px;
+    margin: 0 8px;
+    width: 400px;
+    min-height: 100%;
+    user-select: all;
+    float: left;
+}
+.documentPresentation--small {
+    min-height: 100px;
+}
+
+.documentPresentation__sentence {
+    color: black;
+}
+.documentPresentation__sentence:hover {
+    border: 2px solid black;
+    color: rgb(44, 1, 1) !important;
 }

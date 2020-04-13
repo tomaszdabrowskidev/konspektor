@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../main.css" type="text/css">
+        <link rel="stylesheet" href="import.css" type="text/css">
+        <link href="../../sources/szcionki/Roboto-Regular.ttf" rel="stylesheet">
+        <script src="../main.js" type="text/javascript"></script>
+        <script src="../../sources/js/fileManager.js" type="text/javascript"></script>
+        <script src="import.js" type="text/javascript"></script>
+        <title>Konspektor</title>
+    </head>
+    <body>
+        <header class="header">
+            <span class="header__title">Konspekt Rozprawki Kreator</span>
+            <span class="header__path">Importowanie rozprawki</span>
+        </header>
+        <div class="sidebar">
+            <div class="sidebar__element sidebar__element--selected" id="sidebar__element-0"><span id="sidebar__element--character-0">1.</span> Treść</div>
+            <div class="sidebar__element" id="sidebar__element-1"><span id="sidebar__element--character-1">2.</span> Podział na sekcje</div>
+        </div>
+
+        <div class="content content--withSidebar content--noScrollbar">
+            <div class="sections-container">
+                <div class="sections" id="sections">
+                    <div class="section" style="top: 0%;" id="section-0">
+                        <p class="section__title">Treść</p>
+                        <span class="section__description">Skopiuj i wklej tu (CTRL + V) treść pracy</span>
+                        <div class="clearfix"></div>
+                        <textarea class="section-textarea section-textarea--big" id="draft__content-textarea" placeholder="">
+
+                        </textarea>
+                    </div>
+                    <div class="section" style="top: calc(100%);" id="section-1">
+                        <p class="section__title">Podział na sekcje</p>
+                        <span class="section__description">Sprawdź, czy podział na sekcje (wstęp, argumenty, zakończenie) program prawidłowo dopasował. Jeśli jest źle, wprowadź poprawki.</span>
+                        <div class="clearfix"></div>
+                        <div class="documentPresentation" id="documentPresentation">
+                            
+                        </div>
+                        Zaznacz dane należące do <b>rozpoczęcia</b>
+                        <div class="documentPresentation documentPresentation--small" id="documentPresentation-right">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer footer--draft">
+            <button class="button button__footer left cancel" id="button-cancel">Anuluj</button></a>
+            <button class="button button__footer right" id="button-next">Dalej</button>
+            <button class="button button__footer right" id="button-previous">Wstecz</button>
+        </div>
+    </body>
+</html>
