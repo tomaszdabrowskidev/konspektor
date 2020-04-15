@@ -110,15 +110,105 @@ class DocumentPresentation {
             `;
             setTimeout(() => document.getElementById(`documentPresentation__sentence-${i}`).addEventListener('click', () => this.markerSentence(i)), 500)
         }
+
+        /* load markers buttons events */
+        document.getElementById('marker-button--thesis').addEventListener('click', () => this.setMarker('thesis'));
+        document.getElementById('marker-button--arg1').addEventListener('click', () => this.setMarker('arg1'));
+        document.getElementById('marker-button--arg2').addEventListener('click', () => this.setMarker('arg2'));
+        document.getElementById('marker-button--arg3').addEventListener('click', () => this.setMarker('arg3'));
+        document.getElementById('marker-button--ending').addEventListener('click', () => this.setMarker('ending'));
     }
     static markerSentence(sentenceID) {
       if((document.getElementById('documentPresentation__sentence-' + sentenceID).classList).contains('documentPresentation__sentence--' + this.currentMarker)) {
         document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--' + this.currentMarker)
+        this.sentences[sentenceID].type = 'uncategorized';
       } else {
+        this.removeAllMarkersFromSentence(sentenceID);
         document.getElementById('documentPresentation__sentence-' + sentenceID).classList.add('documentPresentation__sentence--' + this.currentMarker)
+        this.sentences[sentenceID].type = this.currentMarker;
       }
     }
-    static setMarker(marker) {
-        this.currentMarker = marker;
+
+    static removeAllMarkersFromSentence(sentenceID) {
+        document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--thesis');
+        document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--arg1');
+        document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--arg2');
+        document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--arg3');
+        document.getElementById('documentPresentation__sentence-' + sentenceID).classList.remove('documentPresentation__sentence--ending');
     }
+
+    static setMarker(marker) {
+        document.getElementById('marker-button--' + this.currentMarker).classList.remove('documentPresentation__marker-button--selected');
+        this.currentMarker = marker;
+        document.getElementById('marker-button--' + this.currentMarker).classList.add('documentPresentation__marker-button--selected');
+    }
+}
+
+function generateJSON() {
+    let sentences = DocumentPresentation.sentences;
+    let theme = '';
+    let thesis = '';
+    let deduce1 = '';
+    let deduce2 = '';
+    let deduce3 = '';
+    let ending = '';
+
+    for (let i = 0; i < sentences.length; i++) {
+      if(sentences[i].type == 'thesis') thesis += sentences[i].content;
+      else if(sentences[i].type == 'arg1') deduce1 += sentences[i].content;
+      else if(sentences[i].type == 'arg2') deduce2 += sentences[i].content;
+      else if(sentences[i].type == 'arg3') deduce3 += sentences[i].content;
+      else if(sentences[i].type == 'ending') ending += sentences[i].content;
+    }
+
+    let output = {
+        name: "",
+        description: "",
+        created: "",
+        content: [
+            {type: "theme", value: theme},
+            {type: "thesis", value: thesis},
+            {type: "arg1", value: [deduce1, '']},
+            {type: "arg2", value: [deduce2, '']},
+            {type: "arg3", value: [deduce3, '']},
+            {type: "end", value: ending}
+        ]
+    };
+
+    return output;
+}
+
+let wannaSaveAlert = () => {
+    prompt({
+        title: 'Zapisz rozprawke',
+        label: 'Tytuł rozprawki:',
+        value: '',
+        inputAttrs: {
+            type: 'text'
+        },
+        type: 'input'
+    })
+    .then((fileName) => {
+        if (fileName === null) {
+        } else {
+            if (fileName.length > 25 || fileName.length < 3) return alert("Nazwa pliku powinna być dłuższa niż 3 znaki i krótsza niż 25 znaków.")
+            fs.mkdir(path.join(__dirname, `../../data/essays/${fileName}`), (err) => {
+                if (err) {
+                    return console.error(err);
+                } else {
+                    saveFile(`../../data/essays/${fileName}/essay.txt`)
+                    alert("Plik zapisany!")
+                }
+            });
+        }
+    })
+    .catch(console.error);
+}
+
+const saveFile = (path) => {
+    //   path = ../../data/essays/${fileName}/${fileName}.txt
+    content = generateJSON();
+    console.log('Content of file: ');
+    console.log(content);
+    FileManager.writeFile(path, content)
 }
