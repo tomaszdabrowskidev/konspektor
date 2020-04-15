@@ -31,15 +31,17 @@
                     </div>
                     <div class="section" style="top: calc(100%);" id="section-1">
                         <p class="section__title">Podział na sekcje</p>
-                        <span class="section__description">Sprawdź, czy podział na sekcje (wstęp, argumenty, zakończenie) program prawidłowo dopasował. Jeśli jest źle, wprowadź poprawki.</span>
+                        <span class="section__description">Ustaw podział na sekcję (wstęp, argumenty, zakończenie). Aby to zrobić najpierw wybierz odpowiedni przycisk z poniższych, a następnie naciskając na dane zdania "zamaluj" je na odpowiedni kolor. <b>Niezamalowane zdania zostaną zignorowane i pominięte!</b></span>
                         <div class="clearfix"></div>
                         <hr>
-                        <button onclick="DocumentPresentation.setMarker('thesis');">Teza</button><button onclick="DocumentPresentation.setMarker('arg1');">Argument 1</button><button onclick="DocumentPresentation.setMarker('arg2');">Argument 2</button>
+                        <button class="documentPresentation__marker-button documentPresentation__marker-button--thesis documentPresentation__marker-button--selected" id="marker-button--thesis">Teza</button>
+                        <button class="documentPresentation__marker-button documentPresentation__marker-button--arg1" id="marker-button--arg1">Argument 1</button>
+                        <button class="documentPresentation__marker-button documentPresentation__marker-button--arg2" id="marker-button--arg2">Argument 2</button>
+                        <button class="documentPresentation__marker-button documentPresentation__marker-button--arg3" id="marker-button--arg3">Argument 3</button>
+                        <button class="documentPresentation__marker-button documentPresentation__marker-button--ending" id="marker-button--ending">zakończenie</button>
+                        <div class="clearfix"></div>
                         <hr>
                         <div class="documentPresentation" id="documentPresentation">
-
-                        </div>
-                        <div class="documentPresentation documentPresentation--small" id="documentPresentation-right">
 
                         </div>
                     </div>
