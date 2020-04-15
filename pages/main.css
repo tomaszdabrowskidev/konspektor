@@ -291,7 +291,7 @@ body {
     background-color: white;
     color: black;
     padding: 20px;
-    margin: 0 8px;
+    margin: 16px 8px;
     width: 400px;
     min-height: 100%;
     user-select: all;
@@ -307,4 +307,13 @@ body {
 .documentPresentation__sentence:hover {
     border: 2px solid black;
     color: rgb(44, 1, 1) !important;
+}
+.documentPresentation__sentence--thesis {
+    background-color: #EBD3FF;
+}
+.documentPresentation__sentence--arg1 {
+    background-color: #BDFFA8;
+}
+.documentPresentation__sentence--arg2 {
+    background-color: #555555;
 }

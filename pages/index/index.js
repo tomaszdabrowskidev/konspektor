@@ -8,8 +8,8 @@ window.addEventListener("DOMContentLoaded", () => {
             document.getElementById('essays-container').innerHTML += `
                 <button class="squareButton">
                     <div class="squareButton__settings" id="squareButton__settings-${i}">⚙</div>
-                    <img class="squareButton__document-icon" src="../../sources/images/document-icon.png">
-                    <div class="squareButton__name">${files[i]}</div>
+                    <img class="squareButton__document-icon" src="../../sources/images/document-icon.png" id="squareButton__${files[i]}>
+                    <div class="squareButton__name" id="squareButton__${files[i]}">${files[i]}</div>
 
                     <div class="squareButton__settingsPanel squareButton__settingsPanel--hidden" id="squareButton__settingsPanel-${i}">
                         <div class="squareButton__settingsPanel__element" id="squareButton__settingsPanel__element-export-${i}">Eksportuj</div>
@@ -22,6 +22,9 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         for (let i = 0; i < essays.length; i++) {
+            document.getElementById(`squareButton__${files[i]}`).addEventListener('click', () => {
+                window.location.href = `../draft/draft.html?id=${files[i]}`
+            });
             document.getElementById(`squareButton__settings-${i}`).addEventListener('click', () => {
                 openCurrentSettings(i);
             });

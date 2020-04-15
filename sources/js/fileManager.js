@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 
 class FileManager {
     static loadList(path, callback) {
+        console.log(path)
         fs.readdir(path, (err, files) => {
             if (err) return console.log('Unable to scan directory: ' + err);
             

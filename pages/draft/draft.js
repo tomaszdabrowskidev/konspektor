@@ -1,14 +1,35 @@
+String.prototype.last = function() {
+    return this[this.length-1]
+}
+
 let config = {};
-let loadConfigData = () => {
+let session = {"phases": {}, "currPhase": 0, "summaryInfoJson": ""};
+
+
+let loadConfigData = (name) => {
     FileManager.loadFile('../../data/config.json', (file) => {
         let parsedCrits = JSON.parse(file);
         config = parsedCrits;
     })
+    if (name != "") {
+            loadSession(name)
+    }
 }
+
+
 
 window.addEventListener("DOMContentLoaded", () => {
     console.log("Draw Loaded!");
-    loadConfigData();
+    let id;
+    if(getParameterByName('id')) {
+        id = getParameterByName('id');
+        loadConfigData(id);
+        loadSession(id);
+    } else {
+        loadConfigData("");
+    }
+    
+    
     for(let i = 0; i < 7; i++) {
         document.getElementById('sidebar__element-' + i).addEventListener("click", () => {
             console.log('klikam -> ' + i);
@@ -26,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById('draft__button-next').addEventListener('click', () => Drafts.changePhase = "+")
     document.getElementById('draft__button-previous').addEventListener('click', () => Drafts.changePhase = "-")
     document.getElementById('draft__button-save').addEventListener('click', () => {
-        wannaSaveAlert();
+        wannaSaveAlert(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id);
     });
     document.getElementById('draft__button-cancel').addEventListener('click', () => {
         if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
@@ -71,7 +92,43 @@ function generateJSON() {
     return output;    
 }
 
-let wannaSaveAlert = () => {
+
+let loadSession = (id) => {
+    let path = `../../data/essays/${id}`;
+    FileManager.loadFile(path + "/essay.txt", (dataTextarea) => {
+        dataTextarea = JSON.parse(dataTextarea);
+        console.log('tutaj patrz')
+        console.log(dataTextarea)
+        document.getElementById(`draft__phase__theme-0-textarea`).value = dataTextarea["content"][0]["value"];
+        document.getElementById(`draft__phase__thesis-1-textarea`).value = dataTextarea["content"][1]["value"];
+        document.getElementById(`draft__phase__argument-2-textarea`).value = dataTextarea["content"][2]["value"][0];
+        document.getElementById(`draft__phase__example-2-textarea`).value = dataTextarea["content"][2]["value"][1];
+        document.getElementById(`draft__phase__argument-3-textarea`).value = dataTextarea["content"][3]["value"][0];
+        document.getElementById(`draft__phase__example-3-textarea`).value = dataTextarea["content"][3]["value"][1];
+        document.getElementById(`draft__phase__argument-4-textarea`).value = dataTextarea["content"][4]["value"][0];
+        document.getElementById(`draft__phase__example-4-textarea`).value = dataTextarea["content"][4]["value"][1];
+        document.getElementById(`draft__phase__ending-5-textarea`).value = dataTextarea["content"][5]["value"];
+        
+        
+        //document.getElementById('draft__phase__theme-${gg}-textarea').value = dataTextarea[]
+    });
+
+    FileManager.loadFile(path + "/session.json", (dataSession) => {
+        dataSession = JSON.parse(dataSession);
+        Drafts.changePhase = dataSession.currPhase
+    })
+}
+
+let wannaSaveAlert = (id, name) => {
+    console.log(name)
+    if(name) {
+        let path = `../../data/essays/${name}`
+        saveFile(`${path}/essay.txt`); 
+        saveSession(id, `${path}/session.json`);
+        return
+    }
+
+    
     prompt({
         title: 'Zapisz rozprawke',
         label: 'Tytuł rozprawki:',
@@ -84,13 +141,17 @@ let wannaSaveAlert = () => {
     .then((fileName) => {
         if (fileName === null) {
         } else {
+            if(fileName.match(/[a-zA-Z0-9]+/g)[0] != fileName) return alert("Nazwa pliku powinna zawierać tylko litery i liczby")
             if (fileName.length > 25 || fileName.length < 3) return alert("Nazwa pliku powinna być dłuższa niż 3 znaki i krótsza niż 25 znaków.")
             fs.mkdir(path.join(__dirname, `../../data/essays/${fileName}`), (err) => { 
                 if (err) { 
                     return console.error(err); 
                 } else {
-                    saveFile(`../../data/essays/${fileName}/essay.txt`)
-                    alert("Plik zapisany!")
+                    let path = `../../data/essays/${fileName}`;
+                    saveFile(`${path}/essay.txt`);
+                    saveSession(id, `${path}/session.json`);
+                    alert("Plik zapisany!");
+                    window.location.href = `../draft/draft.html?id=${fileName}`
                 }
             }); 
         }
@@ -100,12 +161,23 @@ let wannaSaveAlert = () => {
 
 const saveFile = (path) => {
     //   path = ../../data/essays/${fileName}/${fileName}.txt
-    content = generateJSON();
+    let content = generateJSON();
     console.log('Content of file: ');
     console.log(content);
-    FileManager.writeFile(path, content)
+    FileManager.writeFile(path, JSON.stringify(content))
 }
-
+// current Phase
+const saveSession = (current, path) => {
+    for (let i = 6; i > -1; i--) {
+        let temp = []
+        temp.push(document.getElementById(`sidebar__element--character-${i}`).innerHTML)
+        temp.push(document.getElementById(`sidebar__element-${i}`).classList[1])
+        session.phases[i] = temp
+    }
+    session.currPhase = current
+    //session.summaryInfoJson = summary();
+    FileManager.writeFile(path, JSON.stringify(session))
+}
 
 
 const countWords = (textAreaId) => {
@@ -203,6 +275,11 @@ let turnToCorrect = (id) => {
     document.querySelectorAll("#" + id + " span")[0].innerHTML = "✔"
 }
 
+let turnToNumber = (id, num) => {
+    removeWWC(id);
+    document.querySelectorAll("#" + id + " span")[0].innerHTML = String(num) + "."
+}
+
 let removeWWC = (id) => {
     document.getElementById(id).classList.remove("sidebar__element--warn")
     document.getElementById(id).classList.remove("sidebar__element--correct")
@@ -232,46 +309,54 @@ const realPercents = (values) => {
     return percentsOfValues
 }
 
-class Drafts { // i nie dzialalo? no xd
+class Drafts {
     static currentPhase = 0;
-    
     static set changePhase(phase) {
-        if(phase == "+") phase = this.currentPhase + 1;
-        if(phase == "-") phase = this.currentPhase - 1;
-        console.log('Set ' + phase + ' from old ' + this.currentPhase);
-        document.getElementById(`draft__phase-${phase}`).scrollTo(0,0);
-        //document.getElementById(`draft__phase-${this.currentPhase}`).classList.add('draft__phase--up')
-        document.getElementById(`sidebar__element-${this.currentPhase}`).classList.remove('sidebar__element--selected');
+        setTimeout(() => {
 
-        //document.getElementById(`draft__phase-${this.currentPhase}`).classList.add('draft__phase--up')
-        this.currentPhase = phase;
-        //document.getElementById(`draft__phase-${phase}`).classList.remove('draft__phase--down');
-        document.getElementById('draft__phases').style.transform = `translateY(${(-100) * phase}%)`;
-        document.getElementById(`sidebar__element-${this.currentPhase}`).classList.add('sidebar__element--selected');
-        let neededSidebarIds = returnSidebarsId()
-        let neededTextareaIds = returnTextareas()
-        for (let i = 6; i > this.currentPhase; i--) {
-            removeWWC(neededSidebarIds[i])
-        }
-        for (let i = 0; i < this.currentPhase; i++) {
-            turnToWarn(neededSidebarIds[i])
-            let summOfWords = 0
-            for (let jd = 0; jd < neededTextareaIds[i].length; jd++) {
-                summOfWords += countWords(neededTextareaIds[i][jd])
+            if(phase == "+") phase = this.currentPhase + 1;
+            if(phase == "-") phase = this.currentPhase - 1;
+            console.log('Set ' + phase + ' from old ' + this.currentPhase);
+            let oldphase = this.currentPhase
+            document.getElementById(`draft__phase-${phase}`).scrollTo(0,0);
+            document.getElementById(`sidebar__element-${this.currentPhase}`).classList.remove('sidebar__element--selected');
+            this.currentPhase = phase;
+            document.getElementById('draft__phases').style.transform = `translateY(${(-100) * phase}%)`;
+            document.getElementById(`sidebar__element-${this.currentPhase}`).classList.add('sidebar__element--selected');
+            let neededSidebarIds = returnSidebarsId()
+            let neededTextareaIds = returnTextareas()
+            for (let i = 6; i > this.currentPhase; i--) {
+                removeWWC(neededSidebarIds[i])
             }
-            if (summOfWords > config.crits[i].minWordsWarn) {
-                removeWWC(neededSidebarIds[i])
-                turnToCorrect(neededSidebarIds[i])
-            } else if (summOfWords > config.crits[i].minWordsWrong) {
-                removeWWC(neededSidebarIds[i])
+            if (oldphase < this.currentPhase) {
+                for (let i = 0; i < this.currentPhase; i++) {
                 turnToWarn(neededSidebarIds[i])
+                let summOfWords = 0
+                for (let jd = 0; jd < neededTextareaIds[i].length; jd++) {
+                    summOfWords += countWords(neededTextareaIds[i][jd])
+                }
+                if (summOfWords > config.crits[i].minWordsWarn) {
+                    removeWWC(neededSidebarIds[i])
+                    turnToCorrect(neededSidebarIds[i])
+                } else if (summOfWords > config.crits[i].minWordsWrong) {
+                    removeWWC(neededSidebarIds[i])
+                    turnToWarn(neededSidebarIds[i])
+                } else {
+                    removeWWC(neededSidebarIds[i])
+                    turnToWrong(neededSidebarIds[i])
+                }}
             } else {
-                removeWWC(neededSidebarIds[i])
-                turnToWrong(neededSidebarIds[i])
+                for (let gu = this.currentPhase; gu < 6; gu++) {
+                   turnToNumber(neededSidebarIds[gu], gu)
+                }
             }
-        }
+
+
+
+        }, 100)
     }
 }
+
 
 //https://www.youtube.com/watch?v=nUHKOgHgQc4
 
