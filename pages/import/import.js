@@ -47,21 +47,40 @@ i wolności jednostki, wyboru. W całości „Ferdydurke” jak i przytoczonym f
 
 })
 
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+  }
+
 const splitBySentences = () => {
-    let text = Array.from(document.getElementById('draft__content-textarea').value);
-    let words = [];
+    let text = document.getElementById('draft__content-textarea').value;
+    
+    // TO DO TO FIX
+    text = replaceAll(text, '	', '<tab>');
+    console.log(text)
+
+    let sentences = [];
     let i = 0;
-    while(text.length > 0) {
+    let regex = /(?<!\w\.\w.)(?<![A-Z]\.)(?<![A-Z][a-z]\.)(?<=\.|\?|\!\:)\s+[A-Z]/gm
+    let match;
+    var lastpointer = 0
+    while((match = regex.exec(text)) != null) {
+        console.log('cos robie')
+        sentences.push(text.slice(lastpointer, match.index))
+        lastpointer = match.index
+        // text = text.slice(match.index, text.length)
+    }
+    /*while(text.length > 0) {
         i++;
         if (text[i] == "." || text[i] == "?" || text[i] =="!") {
             if(text[i + 1] == " " && text[i + 2] == text[i + 2].toUpperCase()) {
-                words.push((text.splice(0,i+1)).join(''));
+                sentences.push((text.splice(0,i+1)).join(''));
                 i = 0;
             }
         }
-        if(i > text.length) words.push((text.splice(0,i-1)).join(''));
-    }
-    return words
+        if(i > text.length) sentences.push((text.splice(0,i-1)).join(''));
+    }*/
+    console.log(sentences)
+    return sentences
 }
 
 class Sections {
@@ -178,7 +197,16 @@ function generateJSON() {
     return output;
 }
 
-let wannaSaveAlert = () => {
+let wannaSaveAlert = (id, name) => {
+    console.log(name)
+    if(name) {
+        let path = `../../data/essays/${name}`
+        saveFile(`${path}/essay.txt`); 
+        //saveSession(id, `${path}/session.json`);
+        return
+    }
+
+    
     prompt({
         title: 'Zapisz rozprawke',
         label: 'Tytuł rozprawki:',
@@ -191,15 +219,19 @@ let wannaSaveAlert = () => {
     .then((fileName) => {
         if (fileName === null) {
         } else {
+            if(fileName.match(/[a-zA-Z0-9]+/g)[0] != fileName) return alert("Nazwa pliku powinna zawierać tylko litery i liczby")
             if (fileName.length > 25 || fileName.length < 3) return alert("Nazwa pliku powinna być dłuższa niż 3 znaki i krótsza niż 25 znaków.")
-            fs.mkdir(path.join(__dirname, `../../data/essays/${fileName}`), (err) => {
-                if (err) {
-                    return console.error(err);
+            fs.mkdir(path.join(__dirname, `../../data/essays/${fileName}`), (err) => { 
+                if (err) { 
+                    return console.error(err); 
                 } else {
-                    saveFile(`../../data/essays/${fileName}/essay.txt`)
-                    alert("Plik zapisany!")
+                    let path = `../../data/essays/${fileName}`;
+                    saveFile(`${path}/essay.txt`);
+                    //saveSession(id, `${path}/session.json`);
+                    alert("Plik zapisany!");
+                    window.location.href = `../draft/draft.html?id=${fileName}`
                 }
-            });
+            }); 
         }
     })
     .catch(console.error);
@@ -207,8 +239,8 @@ let wannaSaveAlert = () => {
 
 const saveFile = (path) => {
     //   path = ../../data/essays/${fileName}/${fileName}.txt
-    content = generateJSON();
+    let content = generateJSON();
     console.log('Content of file: ');
     console.log(content);
-    FileManager.writeFile(path, content)
+    FileManager.writeFile(path, JSON.stringify(content))
 }

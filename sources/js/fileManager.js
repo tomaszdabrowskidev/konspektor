@@ -40,6 +40,15 @@ class FileManager {
             console.log(message)
         });
     }
+
+    static isExist(filepath, callback) {
+        fs.access(path.join(__dirname, filepath), (err) => {
+            if (!err) {
+                return callback(true);
+            }
+            return callback(false);
+        });
+    }
 }
 
 

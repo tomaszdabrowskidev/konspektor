@@ -26,6 +26,7 @@ window.addEventListener("DOMContentLoaded", () => {
         loadConfigData(id);
         loadSession(id);
     } else {
+        console.log('elsuje')
         loadConfigData("");
     }
     
@@ -95,6 +96,7 @@ function generateJSON() {
 
 let loadSession = (id) => {
     let path = `../../data/essays/${id}`;
+
     FileManager.loadFile(path + "/essay.txt", (dataTextarea) => {
         dataTextarea = JSON.parse(dataTextarea);
         console.log('tutaj patrz')
@@ -113,10 +115,17 @@ let loadSession = (id) => {
         //document.getElementById('draft__phase__theme-${gg}-textarea').value = dataTextarea[]
     });
 
-    FileManager.loadFile(path + "/session.json", (dataSession) => {
-        dataSession = JSON.parse(dataSession);
-        Drafts.changePhase = dataSession.currPhase
+    FileManager.isExist((path + "/session.json"), (result) => {
+        console.log('result -> ' + result)
+        if(result == false) return console.log('no session fount to load');
+        FileManager.loadFile(path + "/session.json", (dataSession) => {
+            dataSession = JSON.parse(dataSession);
+            Drafts.changePhase = dataSession.currPhase
+        })
     })
+    
+
+    
 }
 
 let wannaSaveAlert = (id, name) => {
@@ -313,6 +322,7 @@ class Drafts {
     static currentPhase = 0;
     static set changePhase(phase) {
         setTimeout(() => {
+            DocumentPresentation.loadText();
 
             if(phase == "+") phase = this.currentPhase + 1;
             if(phase == "-") phase = this.currentPhase - 1;
@@ -369,3 +379,29 @@ document.getElementById(`sidebar__element-${this.currentPhase}`).classList.add('
 document.getElementById(`sidebar__element--character-${beforePhase}`).classList.remove('sidebar__element--selected')
 document.getElementById(`sidebar__element--character-${this.currentPhase}`).classList.add('sidebar__element--selected')
 */
+
+
+class DocumentPresentation {
+    static loadText() {
+        let color = 'black';
+        let valuesToPush = [
+            document.getElementById(`draft__phase__thesis-1-textarea`).value,
+            document.getElementById(`draft__phase__argument-2-textarea`).value,
+            document.getElementById(`draft__phase__example-2-textarea`).value,
+            document.getElementById(`draft__phase__argument-3-textarea`).value,
+            document.getElementById(`draft__phase__example-3-textarea`).value,
+            document.getElementById(`draft__phase__argument-4-textarea`).value,
+            document.getElementById(`draft__phase__example-4-textarea`).value,
+            document.getElementById(`draft__phase__ending-5-textarea`).value
+        ]
+
+        for(let i = 0; i < valuesToPush.length; i++) {
+            document.getElementById('documentPresentation').innerHTML += `
+                <div class="documentPresentation__sentence" style="color: ${color}" id="documentPresentation__sentence-${i}">
+                    ${valuesToPush[i]}
+                </div>
+            `;
+        }
+
+    }
+}

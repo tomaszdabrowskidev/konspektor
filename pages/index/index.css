@@ -62,3 +62,10 @@
     background-color: #9C9C9C;
 }
 
+.squareButton__clickable {
+    position: absolute;
+    top: 32px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 32px);
+}

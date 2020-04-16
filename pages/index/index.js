@@ -8,7 +8,8 @@ window.addEventListener("DOMContentLoaded", () => {
             document.getElementById('essays-container').innerHTML += `
                 <button class="squareButton">
                     <div class="squareButton__settings" id="squareButton__settings-${i}">⚙</div>
-                    <img class="squareButton__document-icon" src="../../sources/images/document-icon.png" id="squareButton__${files[i]}>
+                    <div class="squareButton__clickable" id="squareButton__clickable-${files[i]}"></div>
+                    <img class="squareButton__document-icon" src="../../sources/images/document-icon.png" id="squareButton__${files[i]}">
                     <div class="squareButton__name" id="squareButton__${files[i]}">${files[i]}</div>
 
                     <div class="squareButton__settingsPanel squareButton__settingsPanel--hidden" id="squareButton__settingsPanel-${i}">
@@ -22,8 +23,11 @@ window.addEventListener("DOMContentLoaded", () => {
         }
 
         for (let i = 0; i < essays.length; i++) {
-            document.getElementById(`squareButton__${files[i]}`).addEventListener('click', () => {
+            console.log(`squareButton-click-${files[i]}`)
+            document.getElementById(`squareButton__clickable-${files[i]}`).addEventListener('click', () => {
                 window.location.href = `../draft/draft.html?id=${files[i]}`
+                // po co to tak było, przenosze wyżej jako <a href..> ~mobara01
+                // dobra jednak cofam bo rzeczywiscie te hrefy gupie sa w tym przypadku ~~mobara01
             });
             document.getElementById(`squareButton__settings-${i}`).addEventListener('click', () => {
                 openCurrentSettings(i);
@@ -52,7 +56,7 @@ const openCurrentSettings = (id) => {
 }
 
 let exportFile = (file) => {
-    console.log('nie zrobione :)')
+    alert('nie zrobione :)')
 }
 
 let renameFile = (oldfile) => {
