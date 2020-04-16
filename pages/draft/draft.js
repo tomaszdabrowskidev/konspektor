@@ -87,7 +87,7 @@ let isEquivalent = (obj1, obj2) => {
 }
 
 const cBTMWA = (currentId, currentLocation, callback) => {
-    if (!currentLocation) return false;
+    if (!currentLocation) return callback(false);
     let content = generateJSON();
     let path = `../../data/essays/${currentLocation}`
     FileManager.loadFile(path + "/essay.txt", (dataEssay) => {
@@ -268,7 +268,7 @@ const countPhrases = (textAreaId) => {
             i += 3;
         }
     }
-    return phrases
+    return phrases;
 }
 
 function isLetter(str) {
@@ -414,9 +414,6 @@ class Drafts {
                    turnToNumber(neededSidebarIds[gu], gu)
                 }
             }
-
-
-
         }, 100)
     }
 }
