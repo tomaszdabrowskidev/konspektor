@@ -77,24 +77,30 @@ window.addEventListener("DOMContentLoaded", () => {
         };*/
 
         //can back to menu without asking?
-        if (cBTMWA(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id)) window.location.href = "../index/index.html";
-        else if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
-            window.location.href = "../index/index.html";
-        }
+        cBTMWA(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id, (res) => {
+            if (res) {
+                window.location.href = "../index/index.html";
+            } else {
+                if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?"))  window.location.href = "../index/index.html";
+            }
+        });
     });
 });
 
-//can back to menu without asking?
+let isEquivalent = (obj1, obj2) => {
+    if (JSON.stringify(obj1) == JSON.stringify(obj2)) return true;
+    return false
+}
 
-const cBTMWA = (currentId, currentLocation) => {
-    if (!currentLocation) return false
-    //current location = nazwa pliku w ktorym jestes
-    //jesli to nowa rozprawka to jest undefinem
+const cBTMWA = (currentId, currentLocation, callback) => {
+    if (!currentLocation) return false;
     let content = generateJSON();
     let path = `../../data/essays/${currentLocation}`
     FileManager.loadFile(path + "/essay.txt", (dataEssay) => {
         dataEssay = JSON.parse(dataEssay);
-        if (dataEssay != content) return false; 
+        if (!isEquivalent(dataEssay, content)) {
+            return callback(false); 
+        }
         let currentSession = {"phases": {}, "currPhase": 0, "summaryInfoJson": ""};
         for (let i = 6; i > -1; i--) {
             let temp = []
@@ -105,8 +111,8 @@ const cBTMWA = (currentId, currentLocation) => {
         currentSession.currPhase = currentId
         FileManager.loadFile(path + "/session.json", (dataSession) => {
             dataSession = JSON.parse(dataSession);
-            if (dataSession != currentSession) return false;
-            return true;
+            if (!isEquivalent(currentSession, dataSession)) return callback(false);
+            return callback(true);
         })
     })
 }
