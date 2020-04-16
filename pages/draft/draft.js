@@ -1,11 +1,8 @@
 String.prototype.last = function() {
     return this[this.length-1]
 }
-
 let config = {};
 let session = {"phases": {}, "currPhase": 0, "summaryInfoJson": ""};
-
-
 let loadConfigData = (name) => {
     FileManager.loadFile('../../data/config.json', (file) => {
         let parsedCrits = JSON.parse(file);
@@ -15,9 +12,6 @@ let loadConfigData = (name) => {
             loadSession(name)
     }
 }
-
-
-
 window.addEventListener("DOMContentLoaded", () => {
     console.log("Draw Loaded!");
     let id;
@@ -37,13 +31,39 @@ window.addEventListener("DOMContentLoaded", () => {
             Drafts.changePhase = i;
             if (i == 6) {
                 //tu wywolac funkcje    -- - makeSummary  (=== func countPercentage (istniejacva funckaj))    (co zle co do poprawy ile czego procent stanowi)
+                DocumentPresentation.loadText();
             }
         })
     }
     document.getElementById("draft__phase__theme-0-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__theme-counter-0').innerText = 'Liczba słów: ' + countWords('draft__phase__theme-0-textarea');
         if (document.getElementById("draft__phase__theme-0-textarea").value == "szczepan szczesiak") {
             window.location.href = "../about/about.html"
         };
+    });
+    document.getElementById("draft__phase__thesis-1-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__thesis-counter-1').innerText = 'Liczba słów: ' + countWords('draft__phase__thesis-1-textarea');
+    });
+    document.getElementById("draft__phase__argument-2-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__argument-counter-2').innerText = 'Liczba słów: ' + countWords('draft__phase__argument-2-textarea');
+    });
+    document.getElementById("draft__phase__example-2-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__example-counter-2').innerText = 'Liczba słów: ' + countWords('draft__phase__example-2-textarea');
+    });
+    document.getElementById("draft__phase__argument-3-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__argument-counter-3').innerText = 'Liczba słów: ' + countWords('draft__phase__argument-3-textarea');
+    });
+    document.getElementById("draft__phase__example-3-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__example-counter-3').innerText = 'Liczba słów: ' + countWords('draft__phase__example-3-textarea');
+    });
+    document.getElementById("draft__phase__argument-4-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__argument-counter-4').innerText = 'Liczba słów: ' + countWords('draft__phase__argument-4-textarea');
+    });
+    document.getElementById("draft__phase__example-4-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__example-counter-4').innerText = 'Liczba słów: ' + countWords('draft__phase__example-4-textarea');
+    });
+    document.getElementById("draft__phase__ending-5-textarea").addEventListener("input", () => {
+        document.getElementById('draft__phase__ending-counter-5').innerText = 'Liczba słów: ' + countWords('draft__phase__ending-5-textarea');
     });
     document.getElementById('draft__button-next').addEventListener('click', () => Drafts.changePhase = "+")
     document.getElementById('draft__button-previous').addEventListener('click', () => Drafts.changePhase = "-")
@@ -51,11 +71,46 @@ window.addEventListener("DOMContentLoaded", () => {
         wannaSaveAlert(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id);
     });
     document.getElementById('draft__button-cancel').addEventListener('click', () => {
+        /*
         if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
             window.location.href = "../index/index.html";
-        };
+        };*/
+
+        //can back to menu without asking?
+        if (cBTMWA(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id)) window.location.href = "../index/index.html";
+        else if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
+            window.location.href = "../index/index.html";
+        }
     });
 });
+
+//can back to menu without asking?
+
+const cBTMWA = (currentId, currentLocation) => {
+    if (!currentLocation) return false
+    //current location = nazwa pliku w ktorym jestes
+    //jesli to nowa rozprawka to jest undefinem
+    let content = generateJSON();
+    let path = `../../data/essays/${currentLocation}`
+    FileManager.loadFile(path + "/essay.txt", (dataEssay) => {
+        dataEssay = JSON.parse(dataEssay);
+        if (dataEssay != content) return false; 
+        let currentSession = {"phases": {}, "currPhase": 0, "summaryInfoJson": ""};
+        for (let i = 6; i > -1; i--) {
+            let temp = []
+            temp.push(document.getElementById(`sidebar__element--character-${i}`).innerHTML)
+            temp.push(document.getElementById(`sidebar__element-${i}`).classList[1])
+            currentSession.phases[i] = temp
+        }
+        currentSession.currPhase = currentId
+        FileManager.loadFile(path + "/session.json", (dataSession) => {
+            dataSession = JSON.parse(dataSession);
+            if (dataSession != currentSession) return false;
+            return true;
+        })
+    })
+}
+
 
 
 function generateJSON() {
@@ -117,15 +172,12 @@ let loadSession = (id) => {
 
     FileManager.isExist((path + "/session.json"), (result) => {
         console.log('result -> ' + result)
-        if(result == false) return console.log('no session fount to load');
+        if (result == false) return console.log('no session fount to load');
         FileManager.loadFile(path + "/session.json", (dataSession) => {
             dataSession = JSON.parse(dataSession);
             Drafts.changePhase = dataSession.currPhase
         })
     })
-    
-
-    
 }
 
 let wannaSaveAlert = (id, name) => {
@@ -190,7 +242,10 @@ const saveSession = (current, path) => {
 
 
 const countWords = (textAreaId) => {
+    // PRAWIE dziala jak chcesz kajetan to napraw :P
     let text = document.getElementById(textAreaId).value;
+    text = text.trim()
+    text = text.replace(/  +/g, ' ');
     let wordsArray = text.split(" ");
     for (let i = 0; i < wordsArray.length; i++) {
         if (wordsArray[i].length == 1) {
@@ -322,7 +377,6 @@ class Drafts {
     static currentPhase = 0;
     static set changePhase(phase) {
         setTimeout(() => {
-            DocumentPresentation.loadText();
 
             if(phase == "+") phase = this.currentPhase + 1;
             if(phase == "-") phase = this.currentPhase - 1;
@@ -395,6 +449,7 @@ class DocumentPresentation {
             document.getElementById(`draft__phase__ending-5-textarea`).value
         ]
 
+        document.getElementById('documentPresentation').innerHTML = ``;
         for(let i = 0; i < valuesToPush.length; i++) {
             document.getElementById('documentPresentation').innerHTML += `
                 <div class="documentPresentation__sentence" style="color: ${color}" id="documentPresentation__sentence-${i}">
