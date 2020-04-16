@@ -55,7 +55,7 @@ const splitBySentences = () => {
     let text = document.getElementById('draft__content-textarea').value;
     
     // TO DO TO FIX
-    text = replaceAll(text, '	', '<tab>');
+    text = replaceAll(text, '	', '<tab>⠀⠀⠀⠀');
     console.log(text)
 
     let sentences = [];
