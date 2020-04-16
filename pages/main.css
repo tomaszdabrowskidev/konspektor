@@ -10,6 +10,13 @@
     url('../sources/szcionki/Roboto-Black.ttf');
 }
 
+@font-face {
+    font-family: Infinite-Stroke;
+    src:
+    url('../sources/szcionki/Infinite_Stroke_Cond.otf');
+}
+
+
 /* SCROLLBAR */
 /* width */
 ::-webkit-scrollbar {
@@ -94,6 +101,11 @@ body {
     color: #464748;
     overflow: hidden;
     display: block;
+}
+
+.header__title-kreator {
+    font-family: 'Infinite-Stroke';
+    font-size: 32px;
 }
 
 @media screen and (max-width: 650px) {

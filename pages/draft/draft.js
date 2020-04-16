@@ -71,12 +71,6 @@ window.addEventListener("DOMContentLoaded", () => {
         wannaSaveAlert(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id);
     });
     document.getElementById('draft__button-cancel').addEventListener('click', () => {
-        /*
-        if (confirm("Niezapisane zmiany zostaną usunięte! Czy na pewno chcesz wyjść?")) {
-            window.location.href = "../index/index.html";
-        };*/
-
-        //can back to menu without asking?
         cBTMWA(document.querySelectorAll('.sidebar__element--selected')[0].id.last(), id, (res) => {
             if (res) {
                 window.location.href = "../index/index.html";
