@@ -367,3 +367,22 @@ body {
 .documentPresentation__marker-button--ending {
     background-color: #FFBCA8;
 }
+
+.documentAnalise {
+    width: calc(100% - 500px - 16px - 4px);
+    height: auto;
+    /* background-color: #deeeff; */
+    padding: 20px;
+    margin: 16px 0px;
+    float: left;
+}
+
+.documentAnalise__element {
+    width: 100%;
+    margin: 4px 0;
+    padding-top: 2px;
+    padding-left: 4px;
+    border-left: 3px solid black;
+    overflow: hidden;
+    float: left;
+}

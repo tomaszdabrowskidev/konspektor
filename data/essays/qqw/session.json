@@ -1,1 +1,1 @@
-{"phases":{"0":["X","sidebar__element--wrong"],"1":["✔","sidebar__element--correct"],"2":["✔","sidebar__element--correct"],"3":["✔","sidebar__element--correct"],"4":["4.","sidebar__element--selected"],"5":["5.",null],"6":["6.",null]},"currPhase":"4","summaryInfoJson":""}
+{"phases":{"0":["X","sidebar__element--wrong"],"1":["✔","sidebar__element--correct"],"2":["2.","sidebar__element--selected"],"3":["3.",null],"4":["4.",null],"5":["5.",null],"6":["6.",null]},"currPhase":"2","summaryInfoJson":""}

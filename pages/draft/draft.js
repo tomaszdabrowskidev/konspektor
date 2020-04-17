@@ -316,11 +316,23 @@ const countPercentage = () => {
     let lettersValues = [];
     let phrasesValues = [];
     for (i in textAreas) {
-        wordsValues.push(countWords(textAreas[i]));
-        lettersValues.push(countLetters(textAreas[i]));
-        phrasesValues.push(countPhrases(textAreas[i]));
+        console.log('count words: ' + textAreas[i])
+        if(textAreas[i].length == 1) {
+            wordsValues.push(countWords(textAreas[i]));
+            lettersValues.push(countLetters(textAreas[i]));
+            phrasesValues.push(countPhrases(textAreas[i]));
+        } else if(textAreas[i].length == 2) {
+            wordsValues.push(countWords(textAreas[i][0]));
+            wordsValues.push(countWords(textAreas[i][1]));
+            lettersValues.push(countLetters(textAreas[i][0]));
+            lettersValues.push(countLetters(textAreas[i][1]));
+            phrasesValues.push(countPhrases(textAreas[i][0]));
+            phrasesValues.push(countPhrases(textAreas[i][1]));
+        }
+
     }
     let wordsPercentValues = realPercents(wordsValues)
+    return wordsPercentValues
 
 }
 
@@ -445,14 +457,47 @@ class DocumentPresentation {
             document.getElementById(`draft__phase__example-4-textarea`).value,
             document.getElementById(`draft__phase__ending-5-textarea`).value
         ]
+        let analiseData = [];
 
         document.getElementById('documentPresentation').innerHTML = ``;
+        let percentage = countPercentage();
         for(let i = 0; i < valuesToPush.length; i++) {
-            document.getElementById('documentPresentation').innerHTML += `
-                <div class="documentPresentation__sentence" style="color: ${color}" id="documentPresentation__sentence-${i}">
-                    ${valuesToPush[i]}
+            if(valuesToPush[i]) {
+                document.getElementById('documentPresentation').innerHTML += `
+                    <div class="documentPresentation__sentence" style="color: ${color}" id="documentPresentation__sentence-${i}">
+                        &ensp;&ensp;${valuesToPush[i]}
+                    </div>
+                `;
+
+                if(i == 0) analiseData.push({type: "thesis", title: "Teza", words: countWords('draft__phase__thesis-1-textarea'), percents: percentage[0], htmlID: `documentPresentation__sentence-${i}`});
+                if(i == 1) analiseData.push({type: "arg1", title: "Wniosek 1", words: countWords('draft__phase__argument-2-textarea'), percents: percentage[1], htmlID: `documentPresentation__sentence-${i}`});
+                if(i == 2) analiseData.push({type: "example1", title: "Przykład 1", words: countWords('draft__phase__example-2-textarea'), percents: percentage[2], htmlID: `documentPresentation__sentence-${i}`});
+                if(i == 3) analiseData.push({type: "arg2", title: "Wniosek 2", words: countWords('draft__phase__argument-3-textarea'), percents: percentage[3], htmlID: `documentPresentation__sentence-${i}`});
+                else if(i == 4) analiseData.push({type: "example2", title: "Przykład 2", words: countWords('draft__phase__example-3-textarea'), percents: percentage[4], htmlID: `documentPresentation__sentence-${i}`});
+                else if(i == 5) analiseData.push({type: "arg3", title: "Wniosek3", words: countWords('draft__phase__argument-4-textarea'), percents: percentage[5], htmlID: `documentPresentation__sentence-${i}`});
+                else if(i == 6) analiseData.push({type: "example3", title: "Przykład 3", words: countWords('draft__phase__example-4-textarea'), percents: percentage[6], htmlID: `documentPresentation__sentence-${i}`});
+                else if(i == 7) analiseData.push({type: "ending", title: "Zakończenie", words: countWords('draft__phase__ending-5-textarea'), percents: percentage[7], htmlID: `documentPresentation__sentence-${i}`});
+            }
+        }
+        setTimeout(() => {
+            this.loadAnalise(analiseData);
+        }, 500);
+        
+    }
+
+    static loadAnalise(data) {
+        console.log(data)
+        document.getElementById('documentAnalise').innerHTML = '';
+        for(let i = 0; i < data.length; i++) {
+            let height = document.getElementById(data[i]["htmlID"]).offsetHeight - 8;
+            document.getElementById('documentAnalise').innerHTML += `
+                <div class="documentAnalise__element" style="height: ${height}px">
+                    <b>${data[i]["title"]}</b>
+                    <br>Zawiera ${data[i].words} słów.
+                    <br>Stanowi to ${data[i].percents}% pracy
+                                    
                 </div>
-            `;
+            `
         }
 
     }
